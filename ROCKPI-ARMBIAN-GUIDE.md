@@ -22,8 +22,8 @@ Complete installation guide for OSOYOO DSI touchscreen panels on RockPi 4B+ runn
 
 ```bash
 cd ~
-git clone https://github.com/your-repo/osoyoo-dsi-panel.git
-cd osoyoo-dsi-panel
+git clone https://github.com/osoyoo/osoyoo-dsi-rockpi4b-plus.git
+cd osoyoo-dsi-rockpi4b-plus
 sudo ./install-rockpi-armbian.sh
 ```
 
@@ -233,7 +233,7 @@ sudo reboot
 When Armbian updates the kernel, reinstall the driver:
 
 ```bash
-cd ~/osoyoo-dsi-panel
+cd ~/osoyoo-dsi-rockpi4b-plus
 sudo dkms remove osoyoo-dsi-panel/1.0 --all
 sudo ./install-rockpi-armbian.sh
 sudo reboot
@@ -311,7 +311,7 @@ Edit `/boot/armbianEnv.txt` and remove the `user_overlays` line, then reboot.
 
 ## Support
 
-- **Issues**: https://github.com/your-repo/osoyoo-dsi-panel/issues
+- **Issues**: https://github.com/osoyoo/osoyoo-dsi-rockpi4b-plus/issues
 - **Email**: support@osoyoo.info
 - **Armbian Forum**: https://forum.armbian.com/
 
