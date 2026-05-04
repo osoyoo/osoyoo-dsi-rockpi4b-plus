@@ -1,0 +1,107 @@
+/dts-v1/;
+/plugin/;
+
+/ {
+	compatible = "rockchip,rk3399";
+
+	fragment@0 {
+		target = <&i2c4>;
+		__overlay__ {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			status = "okay";
+
+			display_mcu: display_mcu@45 {
+				compatible = "osoyoo,touchscreen-panel-regulator";
+				reg = <0x45>;
+				gpio-controller;
+				#gpio-cells = <2>;
+			};
+
+			gt9271: gt9271@5d {
+				compatible = "goodix,gt9271";
+				reg = <0x5d>;
+				interrupt-parent = <&gpio1>;
+				interrupts = <20 2>; /* GPIO1_C4, IRQ_TYPE_EDGE_FALLING */
+				irq-gpios = <&gpio1 20 0>;
+				reset-gpios = <&gpio1 24 0>; /* GPIO1_D0 */
+				AVDD28-supply = <&touch_reg>;
+				touchscreen-size-x = <720>;
+				touchscreen-size-y = <1280>;
+				touchscreen-x-mm = <90>;
+				touchscreen-y-mm = <151>;
+			};
+		};
+	};
+
+	fragment@1 {
+		target = <&mipi_dsi>;
+		__overlay__ {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			status = "okay";
+
+			ports {
+				#address-cells = <1>;
+				#size-cells = <0>;
+
+				port@0 {
+					reg = <0>;
+					mipi_out: endpoint {
+						remote-endpoint = <&panel_in>;
+					};
+				};
+			};
+
+			dsi_panel: panel@0 {
+				compatible = "osoyoo,dsi-7inch";
+				reg = <0>;
+				reset-gpio = <&display_mcu 0 0>;
+				backlight = <&display_mcu>;
+
+				port {
+					panel_in: endpoint {
+						remote-endpoint = <&mipi_out>;
+					};
+				};
+			};
+		};
+	};
+
+	fragment@2 {
+		target-path = "/";
+		__overlay__ {
+			touch_reg: touch_reg {
+				compatible = "regulator-fixed";
+				regulator-name = "touch_reg";
+				gpio = <&display_mcu 1 1>;
+				startup-delay-us = <50000>;
+				enable-active-high;
+			};
+		};
+	};
+
+	fragment@10 {
+		target = <&gt9271>;
+		__dormant__ {
+			touchscreen-inverted-x;
+		};
+	};
+
+	fragment@11 {
+		target = <&gt9271>;
+		__dormant__ {
+			touchscreen-inverted-y;
+		};
+	};
+
+	__overrides__ {
+		sizex = <&gt9271>,"touchscreen-size-x:0";
+		sizey = <&gt9271>,"touchscreen-size-y:0";
+		invx = <0>, "+10";
+		invy = <0>, "+11";
+		swapxy = <&gt9271>,"touchscreen-swapped-x-y?";
+		disable_touch = <&gt9271>, "status=disabled";
+		rotation = <&dsi_panel>, "rotation:0";
+	};
+};
