@@ -16,6 +16,19 @@ Complete installation guide for OSOYOO DSI touchscreen panels on RockPi 4B+ runn
 3. MIPI DSI cable (usually included with panel)
 4. Armbian OS installed
 
+## ⚠️ Current Status
+
+**Partially Working** - Driver builds and installs successfully on kernel 6.18+. Device tree overlay support is in progress.
+
+**What Works:**
+- ✅ Kernel 6.18+ GPIO API compatibility fixed
+- ✅ DKMS driver builds and installs
+- ✅ Correct I2C bus identified (I2C1, not I2C4)
+
+**Known Issues:**
+- ❌ U-Boot overlay loading not working (investigating)
+- ⚠️ Requires manual device tree patching (workaround available)
+
 ## Quick Installation (3 Steps)
 
 ### Step 1: Install the Driver
