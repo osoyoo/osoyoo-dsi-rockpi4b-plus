@@ -5,11 +5,12 @@
 	compatible = "rockchip,rk3399";
 
 	fragment@0 {
-		target = <&i2c4>;
+		target = <&i2c1>;
 		__overlay__ {
 			#address-cells = <1>;
 			#size-cells = <0>;
 			status = "okay";
+			clock-frequency = <100000>;
 
 			display_mcu: display_mcu@45 {
 				compatible = "osoyoo,touchscreen-panel-regulator";
